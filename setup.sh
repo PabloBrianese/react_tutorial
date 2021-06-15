@@ -18,8 +18,7 @@ cd ..
 
 # Handles virtual machine communication when using WSL
 touch .env
-echo "CHOKIDAR_USEPOLLING=true
-" >> .env
+echo "CHOKIDAR_USEPOLLING=true" >> .env
 
 npm start  # this takes an incredible amount of time
 # Open localhost in incognito mode to keep the browser from caching the contents
