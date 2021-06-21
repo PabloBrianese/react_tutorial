@@ -3,8 +3,8 @@ import './App.css';
 
 function NumberList(props) {
   const numbers = props.numbers;
-  const listItems = numbers.map((number, index) =>
-    <li key={index}>
+  const listItems = numbers.map(number =>
+    <li key={number.toString()}>
       {number}
     </li>
   );
