@@ -2,10 +2,13 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  const numbers = [1, 2, 3, 4, 5];
+  const listItems = numbers.map(n => <li>{n}</li>);
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <ul>{listItems}</ul>
         <p>
           Edit(ar) <code>src/App.js</code> and save to reload.
         </p>
