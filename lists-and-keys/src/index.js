@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import App from './App';
+import { Blog, posts } from './Blog';
+
+const applications = {
+  'App': (<React.StrictMode><App /></React.StrictMode>),
+  'Blog': (<Blog posts={posts} />),
+}
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  applications['Blog'],
   document.getElementById('root')
 );
 
