@@ -1,12 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
 
+function ListItem(props) {
+  return <li>{props.value}</li>
+}
+
 function NumberList(props) {
   const numbers = props.numbers;
   const listItems = numbers.map(number =>
-    <li key={number.toString()}>
-      {number}
-    </li>
+    <ListItem
+      key={number.toString()}  // key belongs inside map
+      value={number}
+    />
   );
   return (
     <ul>{listItems}</ul>
