@@ -1,20 +1,30 @@
 import './Blog.css';
 
+function Post(props) {
+  return (
+    <div>
+      <h3>{props.title}</h3>
+      <p>{props.content}</p>
+    </div>
+  );
+}
+
 function Blog(props) {
   const sidebar = (
     <ul>
       {props.posts.map(post =>
-        <li key={post.id}>  // different arrays can share keys
+        <li key={post.id}>  {/* different arrays can share keys */}
           {post.title}
         </li>
       )}
     </ul>
   );
   const content = props.posts.map(post =>
-    <div key={post.id}>  // different arrays can share keys
-      <h3>{post.title}</h3>
-      <p>{post.content}</p>
-    </div>
+    <Post
+      key={post.id}  {/* different arrays can share keys */}
+      title={post.title}
+      content={post.content}
+    />
   );
   return (
     <div>
