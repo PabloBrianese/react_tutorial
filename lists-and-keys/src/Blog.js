@@ -1,5 +1,13 @@
 import './Blog.css';
 
+function SidebarElement(props) {
+  return (
+    <li>
+      {props.post.title}
+    </li>
+  );
+}
+
 function Post(props) {
   return (
     <div>
@@ -13,15 +21,16 @@ function Blog(props) {
   const sidebar = (
     <ul>
       {props.posts.map(post =>
-        <li key={post.id}>  {/* different arrays can share keys */}
-          {post.title}
-        </li>
+        <SidebarElement
+          key={post.id}
+          post={post}
+        />
       )}
     </ul>
   );
   const content = props.posts.map(post =>
     <Post
-      key={post.id}  {/* different arrays can share keys */}
+      key={post.id}
       title={post.title}
       content={post.content}
     />
