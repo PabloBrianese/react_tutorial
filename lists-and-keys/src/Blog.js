@@ -4,14 +4,14 @@ function Blog(props) {
   const sidebar = (
     <ul>
       {props.posts.map(post =>
-        <li key={post.id}>
+        <li key={post.id}>  // different arrays can share keys
           {post.title}
         </li>
       )}
     </ul>
   );
   const content = props.posts.map(post =>
-    <div key={post.id}>
+    <div key={post.id}>  // different arrays can share keys
       <h3>{post.title}</h3>
       <p>{post.content}</p>
     </div>
