@@ -50,3 +50,5 @@ const posts = [
 ];
 
 export {Blog, posts};
+
+// Finished

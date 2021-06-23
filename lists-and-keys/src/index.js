@@ -12,7 +12,7 @@ const applications = {
 }
 
 ReactDOM.render(
-  applications['Blog'],
+  applications['App'],
   document.getElementById('root')
 );
 
