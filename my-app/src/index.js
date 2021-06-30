@@ -2,6 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
@@ -43,6 +63,42 @@ class Board extends React.Component {
   }
 }
 
+function PlayersMove(props) {
+  const player = move => !(move % 2) ? 'X' : 'O';
+
+  const historyDifferencePoint = (squares1, squares2) => {
+    for (let i = 0; i < squares1.length; ++i)
+      if (squares1[i] !== squares2[i])
+        return { player: squares1[i], square: i };
+    
+    return null;
+  }
+
+  const squareCoordinates = squareIndex => ({
+    x: squareIndex % 3 + 1,
+    y: Math.ceil(squareIndex / 3),
+  });
+
+
+  if (props.hist.length > props.move + 1) {
+    const board1 = props.hist[props.move + 1];  // board at the end of move
+    const board2 = props.step;  // board at the beginning of move
+    const lastMove = historyDifferencePoint(board1.squares, board2.squares);
+    const selectedSquare = (lastMove) ?
+      squareCoordinates(lastMove.square) :
+      null;
+
+    return (
+      <p>
+        {player(props.move)} picks {" "} {JSON.stringify(selectedSquare)}
+      </p>
+    );
+  }
+  else {
+    return (null);
+  }
+}
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -81,15 +137,19 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
-    const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move :
-        'Go to game start';
-        return (
-          <li key={move}>
-            <button onClick={() => this.jumpTo(move)}>{desc}</button>
-          </li>
-        );
+    const timeTravelDesc = move => move ?
+      'Go to move #' + move :
+      'Go to game start';
+
+    const moves = history.map((step, move, hist) => {
+      return (
+        <li key={move}>
+          <button onClick={() => this.jumpTo(move)}>
+            {timeTravelDesc(move)}
+          </button>
+          <PlayersMove step={step} move={move} hist={hist} /> 
+        </li>
+      );
     })
 
     let status;
@@ -122,23 +182,3 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
-
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
