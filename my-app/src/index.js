@@ -72,10 +72,12 @@ function PlayersMove(props) {
     return null;
   }
 
-  const squareCoordinates = squareIndex => ({
+function squareCoordinates(squareIndex) {
+  return {
     x: squareIndex % 3 + 1,
     y: Math.floor(squareIndex / 3) + 1,
-  });
+  };
+}
 
 
   if (props.hist.length > props.move + 1) {
@@ -146,12 +148,18 @@ class Game extends React.Component {
       'Go to move #' + move :
       'Go to game start';
 
+    function TimeTravelButton(props) {
+      return (
+        <button onClick={() => this.jumpTo(props.move)}>
+          {timeTravelDesc(props.move)}
+        </button>
+      );
+    }
+
     const moves = history.map((step, move, hist) => {
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>
-            {timeTravelDesc(move)}
-          </button>
+          <TimeTravelButton move={move} />
           <PlayersMove step={step} move={move} hist={hist} /> 
         </li>
       );
@@ -166,6 +174,7 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
+          <div>{this.state.stepNumber}</div>
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>
