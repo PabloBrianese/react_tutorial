@@ -64,8 +64,6 @@ class Board extends React.Component {
 }
 
 function PlayersMove(props) {
-  const player = move => !(move % 2) ? 'X' : 'O';
-
   const historyDifferencePoint = (squares1, squares2) => {
     for (let i = 0; i < squares1.length; ++i)
       if (squares1[i] !== squares2[i])
@@ -99,13 +97,15 @@ function PlayersMove(props) {
   }
 }
 
+const player = move => !(move % 2) ? 'X' : 'O';
+
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       history: [{ squares: Array(9).fill(null) }],
       stepNumber: 0,
-      xIsNext: true,
     }
   }
 
@@ -117,18 +117,20 @@ class Game extends React.Component {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
-    squares[i] = state.xIsNext ? 'X' : 'O';
+    squares[i] = player(state.stepNumber);
+
+    console.log(history.length)
+    console.log(squares[i]);
+
     this.setState({
       history: history.concat([{squares}]),
       stepNumber: history.length,
-      xIsNext: !state.xIsNext,
     });
   }
 
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0,
     });
   }
 
@@ -136,6 +138,9 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    let status = (winner) ?
+      'Winner: ' + winner :
+      'Next player: ' + player(this.state.stepNumber);
 
     const timeTravelDesc = move => move ?
       'Go to move #' + move :
@@ -151,13 +156,6 @@ class Game extends React.Component {
         </li>
       );
     })
-
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
 
     return (
       <div className="game">
