@@ -74,7 +74,7 @@ function PlayersMove(props) {
 
   const squareCoordinates = squareIndex => ({
     x: squareIndex % 3 + 1,
-    y: Math.ceil(squareIndex / 3),
+    y: Math.floor(squareIndex / 3) + 1,
   });
 
 
