@@ -101,6 +101,27 @@ function squareCoordinates(squareIndex) {
 
 const player = move => !(move % 2) ? 'X' : 'O';
 
+function TimeTravelButton(props) {
+  const timeTravelDesc = props.move ?
+    'Go to move #' + props.move :
+    'Go to game start';
+  const fontWeight = props.move === props.stepNumber ? "bold" : "normal";
+
+  function jumpTo(move) {
+    props.setState({
+      stepNumber: move,
+    });
+  }  
+
+  return (
+    <button
+      onClick={() => jumpTo(props.move)}
+      style={{fontWeight: fontWeight}}
+    >
+      {timeTravelDesc}
+    </button>
+  );
+}
 
 class Game extends React.Component {
   constructor(props) {
@@ -130,12 +151,6 @@ class Game extends React.Component {
     });
   }
 
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-    });
-  }
-
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -144,22 +159,14 @@ class Game extends React.Component {
       'Winner: ' + winner :
       'Next player: ' + player(this.state.stepNumber);
 
-    const timeTravelDesc = move => move ?
-      'Go to move #' + move :
-      'Go to game start';
-
-    function TimeTravelButton(props) {
-      return (
-        <button onClick={() => this.jumpTo(props.move)}>
-          {timeTravelDesc(props.move)}
-        </button>
-      );
-    }
-
     const moves = history.map((step, move, hist) => {
       return (
         <li key={move}>
-          <TimeTravelButton move={move} />
+          <TimeTravelButton
+            move={move}
+            stepNumber={this.state.stepNumber}
+            setState={obj => this.setState(obj)}
+          />
           <PlayersMove step={step} move={move} hist={hist} /> 
         </li>
       );
