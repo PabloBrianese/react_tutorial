@@ -80,16 +80,17 @@ function PlayersMove(props) {
 
 
   if (props.hist.length > props.move + 1) {
-    const board1 = props.hist[props.move + 1];  // board at the end of move
-    const board2 = props.step;  // board at the beginning of move
-    const squareIndex = boardDifferencePoint(board1.squares, board2.squares);
+    const boardEnd = props.hist[props.move + 1].squares;  // board at the end of move
+    const boardBeginning = props.step.squares;  // board at the beginning of move
+    const squareIndex = boardDifferencePoint(boardEnd, boardBeginning);
     const selectedSquare = (squareIndex) ?
       squareCoordinates(squareIndex) :
       null;
+    const selectedSquareString = JSON.stringify(selectedSquare).replace(/"/g, '');
 
     return (
       <p>
-        {player(props.move)} picks {" "} {JSON.stringify(selectedSquare)}
+        {player(props.move)} picks {" "} {selectedSquareString}
       </p>
     );
   }
