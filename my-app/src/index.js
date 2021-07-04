@@ -64,28 +64,27 @@ class Board extends React.Component {
 }
 
 function PlayersMove(props) {
-  const historyDifferencePoint = (squares1, squares2) => {
-    for (let i = 0; i < squares1.length; ++i)
-      if (squares1[i] !== squares2[i])
-        return { player: squares1[i], square: i };
-    
+  const boardDifferencePoint = (board1, board2) => {
+    for (let i = 0; i < board1.length; ++i)
+      if (board1[i] !== board2[i]) return i;
+
     return null;
   }
 
-function squareCoordinates(squareIndex) {
-  return {
-    x: squareIndex % 3 + 1,
-    y: Math.floor(squareIndex / 3) + 1,
-  };
-}
+  function squareCoordinates(squareIndex) {
+    return {
+      x: squareIndex % 3 + 1,
+      y: Math.floor(squareIndex / 3) + 1,
+    };
+  }
 
 
   if (props.hist.length > props.move + 1) {
     const board1 = props.hist[props.move + 1];  // board at the end of move
     const board2 = props.step;  // board at the beginning of move
-    const lastMove = historyDifferencePoint(board1.squares, board2.squares);
-    const selectedSquare = (lastMove) ?
-      squareCoordinates(lastMove.square) :
+    const squareIndex = boardDifferencePoint(board1.squares, board2.squares);
+    const selectedSquare = (squareIndex) ?
+      squareCoordinates(squareIndex) :
       null;
 
     return (
