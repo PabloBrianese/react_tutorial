@@ -78,15 +78,13 @@ function PlayersMove(props) {
     };
   }
 
-
   if (props.hist.length > props.move + 1) {
     const boardEnd = props.hist[props.move + 1].squares;  // board at the end of move
     const boardBeginning = props.step.squares;  // board at the beginning of move
     const squareIndex = boardDifferencePoint(boardEnd, boardBeginning);
-    const selectedSquare = (squareIndex) ?
-      squareCoordinates(squareIndex) :
-      null;
-    const selectedSquareString = JSON.stringify(selectedSquare).replace(/"/g, '');
+    const selectedSquare = squareCoordinates(squareIndex);
+    const selectedSquareString = JSON.stringify(selectedSquare)
+      .replace(/"/g, '');
 
     return (
       <p>
@@ -132,6 +130,10 @@ class Game extends React.Component {
     }
   }
 
+  setStepNumber(newStep) {
+    this.setState({ stepNumber: newStep });
+  }
+
   handleClick(i) {
     const state = this.state;
     const history = state.history.slice(0, state.stepNumber + 1);
@@ -141,9 +143,6 @@ class Game extends React.Component {
       return;
     }
     squares[i] = player(state.stepNumber);
-
-    console.log(history.length)
-    console.log(squares[i]);
 
     this.setState({
       history: history.concat([{squares}]),
