@@ -180,7 +180,6 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>{this.state.stepNumber}</div>
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>
