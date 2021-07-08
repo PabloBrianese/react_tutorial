@@ -108,12 +108,20 @@ function TimeTravelButton(props) {
   );
 }
 
+function HistoryOrderSwitchButton(props) {
+  return <label class="switch">
+    <input type="checkbox" onClick={() => props.onClick()} />
+    <span class="slider" />
+  </label>;
+}
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       history: [{ squares: Array(9).fill(null) }],
       stepNumber: 0,
+      historyOrderAscending: true,
     }
   }
 
@@ -121,14 +129,17 @@ class Game extends React.Component {
     this.setState({ stepNumber: newStep });
   }
 
+  changeHistoryOrder() {
+    const currentValue = this.state.historyOrderAscending;
+    this.setState({ historyOrderAscending: !currentValue });
+  }
+
   handleClick(i) {
     const state = this.state;
     const history = state.history.slice(0, state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
+    if (calculateWinner(squares) || squares[i]) return;
     squares[i] = player(state.stepNumber);
 
     this.setState({
@@ -158,6 +169,11 @@ class Game extends React.Component {
       );
     })
 
+    const reversedMoves = moves.map(x => x).reverse()
+    const renderedMoves = (this.state.historyOrderAscending) ?
+      moves :
+      reversedMoves;
+
     return (
       <div className="game">
         <div className="game-board">
@@ -168,7 +184,12 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <div>
+            <HistoryOrderSwitchButton
+              onClick={() => this.changeHistoryOrder()}
+            />
+            <ul>{renderedMoves}</ul>
+          </div>
         </div>
       </div>
     );
