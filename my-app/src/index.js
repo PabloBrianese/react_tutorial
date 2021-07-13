@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function calculateWinner(squares) {
+function calculateGameResult(squares) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -19,6 +19,9 @@ function calculateWinner(squares) {
       return squares[a];
     }
   }
+
+  if (squares.every(x => x)) return 'draw';
+
   return null;
 }
 
@@ -163,7 +166,8 @@ class Game extends React.Component {
     const history = state.history.slice(0, state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) return;
+    if (calculateGameResult(squares) || squares[i]) return;
+
     squares[i] = player(state.stepNumber);
 
     this.setState({
@@ -175,12 +179,16 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
-    let status = (winner) ?
-      'Winner: ' + winner :
-      'Next player: ' + player(this.state.stepNumber);
+    const gameResult = calculateGameResult(current.squares);
+    const status = {
+      'X': 'Winner: X',
+      'O': 'Winner: O',
+      'draw': 'The game ended in a draw',
+      null: 'Next player: ' + player(this.state.stepNumber),
+    }[gameResult];
 
-    const winningLine = (winner) ? calculateWinningLine(current.squares): null;
+    const winningLine = (gameResult === 'X' || gameResult === 'O') ?
+      calculateWinningLine(current.squares): null;
 
     const moves = history.map((step, move, hist) => {
       return (
