@@ -210,6 +210,12 @@ class Game extends React.Component {
 
     return (
       <div className="game">
+        <header>
+          <HistoryOrderSwitchButton
+            onClick={() => this.changeHistoryOrder()}
+          />
+        </header>
+        <h1>Tic-tac-toe</h1>
         <div className="game-board">
           <Board
             squares={current.squares}
@@ -220,9 +226,6 @@ class Game extends React.Component {
         <div className="game-info">
           <div>{status}</div>
           <div>
-            <HistoryOrderSwitchButton
-              onClick={() => this.changeHistoryOrder()}
-            />
             <ul>{renderedMoves}</ul>
           </div>
         </div>
