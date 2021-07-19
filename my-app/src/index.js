@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-snapshot';
+import ReactDOM from 'react-dom'
 import './index.css';
 
 function calculateGameResult(squares) {
@@ -236,7 +236,7 @@ class Game extends React.Component {
 
 // ========================================
 
-render(
+ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
